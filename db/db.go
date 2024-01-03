@@ -1,9 +1,9 @@
 package db
 
 import (
+	"inlove-app-server/prisma/db"
 	"log"
 	"sync"
-	"vercel-go/prisma/db"
 )
 
 var (
