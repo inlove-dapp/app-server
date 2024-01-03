@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"vercel-go/controllers"
+	"inlove-app-server/controllers"
 )
 
 func Router() *gin.Engine {

@@ -1,12 +1,13 @@
 package main
 
 import (
+	"inlove-app-server/db"
+	"inlove-app-server/router"
 	"log"
 	"os"
-	"vercel-go/db"
-	"vercel-go/router"
 )
 
+//go:generate go run github.com/steebchen/prisma-client-go generate
 func main() {
 	route := router.Router()
 	databaseUrl := os.Getenv("DATABASE_URL")
