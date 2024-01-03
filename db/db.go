@@ -17,7 +17,7 @@ func GetDB() *db.PrismaClient {
 		client = db.NewClient()
 		err := client.Prisma.Connect()
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 			//panic(err)
 		}
 	})
