@@ -7,6 +7,10 @@ on:
 
 jobs:
   docker-service:
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     name: Build dockerized services
     runs-on: ubuntu-latest
     steps:
