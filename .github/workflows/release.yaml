@@ -23,7 +23,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.RELEASE_TOKEN }}
       - id: string
         uses: ASzc/change-string-case-action@v5
         with:
@@ -40,4 +40,3 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             VERSION=${{ github.event.release.tag_name }}
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
