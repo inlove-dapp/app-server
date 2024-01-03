@@ -6,7 +6,6 @@ import (
 	"log"
 )
 
-//go:generate go run github.com/steebchen/prisma-client-go generate
 func main() {
 	route := router.Router()
 	db.GetDB()

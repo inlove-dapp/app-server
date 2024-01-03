@@ -2,7 +2,10 @@ module inlove-app-server
 
 go 1.21
 
-require github.com/gin-gonic/gin v1.9.1
+require (
+	github.com/gin-gonic/gin v1.9.1
+	go.uber.org/mock v0.4.0
+)
 
 require (
 	github.com/bytedance/sonic v1.10.2 // indirect
