@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"inlove-app-server/controllers"
 	posts "inlove-app-server/controllers/posts/dto"
-	"inlove-app-server/db"
 	prisma "inlove-app-server/prisma/db"
 	"net/http"
 )
@@ -16,12 +15,19 @@ type IPostController interface {
 
 type PostController struct {
 	controllers.IResourceController
+	prisma *prisma.PrismaClient
 }
 
 var (
-	prismaClient = db.GetDB()
-	contextB     = context.Background()
+	contextB = context.Background()
 )
+
+// NewPostController returns a new instance of PostController.
+func NewPostController(prisma *prisma.PrismaClient) IPostController {
+	return &PostController{
+		prisma: prisma,
+	}
+}
 
 func (pc PostController) Create(c *gin.Context) {
 	var payload posts.CreatePostDto
@@ -30,7 +36,7 @@ func (pc PostController) Create(c *gin.Context) {
 		return
 	}
 
-	post, err := prismaClient.Post.CreateOne(
+	post, err := pc.prisma.Post.CreateOne(
 		prisma.Post.Title.Set(payload.Title),
 		prisma.Post.Published.Set(false),
 	).Exec(contextB)
@@ -44,7 +50,7 @@ func (pc PostController) Create(c *gin.Context) {
 }
 
 func (pc PostController) List(c *gin.Context) {
-	postResults, err := prismaClient.Post.FindMany().Exec(contextB)
+	postResults, err := pc.prisma.Post.FindMany().Exec(contextB)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
