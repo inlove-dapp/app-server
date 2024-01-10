@@ -2,3 +2,8 @@
 .idea
 .env
 mocks
+.build
+.vscode
+.DS_Store
+.DS_Store
+.swiftpm

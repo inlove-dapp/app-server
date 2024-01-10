@@ -4,23 +4,21 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
     strategy:
       matrix:
-        go-version: [ '1.21.x' ]
+        os: [ubuntu-latest]
+        swift: ["5"]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Go ${{ matrix.go-version }}
-        uses: actions/setup-go@v4
+      - uses: swift-actions/setup-swift@v1
         with:
-          go-version: ${{ matrix.go-version }}
-      - name: Install dependencies
-        run: go generate ./... && go install
+          swift-version: ${{ matrix.swift }}
+      - uses: actions/checkout@v4
       - name: Build
-        run: go build -v ./...
-      - name: Test with the Go CLI
-        run: go test ./...
-
+        run: swift build
+      - name: Run tests
+        run: swift test
   docker:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,9 +38,6 @@ jobs:
           tags: test
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            VERSION=dev
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
   create-release:
     env:
