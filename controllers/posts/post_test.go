@@ -34,6 +34,8 @@ func (suite *PostControllerSuite) TestGetAllPostsHappyCase() {
 				Title:     "Test Post",
 				ID:        "1",
 				Published: true,
+				IsPublic:  true,
+				Data:      db.JSON{},
 			},
 		},
 	}

@@ -4,14 +4,13 @@ go 1.21
 
 require (
 	github.com/gin-gonic/gin v1.9.1
-	go.uber.org/mock v0.4.0
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/stretchr/testify v1.8.4
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 )
 
 require (

@@ -5,6 +5,7 @@ import (
 	"inlove-app-server/controllers"
 	"inlove-app-server/controllers/posts"
 	"inlove-app-server/db"
+	"inlove-app-server/middlewares"
 )
 
 // Router returns a gin router with all the routes defined.
@@ -16,7 +17,7 @@ func Router() *gin.Engine {
 		posts.NewPostController(client),
 	}
 
-	api := router.Group("/api")
+	api := router.Group("/api").Use(middlewares.JWTAuthMiddleware())
 	{
 		for _, controller := range definedControllers {
 			api.POST("/"+controller.RootName(), controller.Create)
