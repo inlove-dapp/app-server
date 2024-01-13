@@ -83,7 +83,7 @@ func (irc *ItineraryReportController) List(c *gin.Context) {
 		prisma.ItineraryReport.User.Fetch(),
 		prisma.ItineraryReport.AuthorizedUsers.Fetch(),
 	).Exec(c.Request.Context())
-
+	
 	if err != nil {
 		logger.Error("Error fetching itinerary reports: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": irc.prismaErrorClient.HandleError(err)})
