@@ -28,8 +28,9 @@ func TestJWTAuthMiddleware(t *testing.T) {
 	environments.JwtSecret = secret
 	// generate a valid JWT token
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"name": "John Doe",
-		"sub":  "123",
+		"name":  "John Doe",
+		"sub":   "123",
+		"email": "abc@abc.com",
 	}).SignedString([]byte(secret))
 
 	if err != nil {
@@ -37,9 +38,14 @@ func TestJWTAuthMiddleware(t *testing.T) {
 	}
 
 	invalidToken, err := jwt.NewWithClaims(jwt.SigningMethodHS384, jwt.MapClaims{
-		"name": "John Doe",
-		"sub":  "123",
+		"name":  "John Doe",
+		"sub":   "123",
+		"email": "abc@abc.com",
 	}).SignedString([]byte("invalid-secret"))
+
+	invalidTokenWithEmptySub, err := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"name": "John Doe",
+	}).SignedString([]byte(secret))
 
 	if err != nil {
 		t.Fatal(err)
@@ -66,6 +72,22 @@ func TestJWTAuthMiddleware(t *testing.T) {
 		// Create a new HTTP request
 		req, _ := http.NewRequest("GET", "/test", nil)
 		req.Header.Set("Authorization", "Bearer invalid-token")
+
+		// Create a new HTTP response recorder
+		resp := httptest.NewRecorder()
+
+		// Serve the HTTP request
+		router.ServeHTTP(resp, req)
+
+		// Assert the HTTP status code
+		assert.Equal(t, http.StatusUnauthorized, resp.Code)
+	})
+
+	// Test with an empty sub JWT token
+	t.Run("invalid token with empty sub", func(t *testing.T) {
+		// Create a new HTTP request
+		req, _ := http.NewRequest("GET", "/test", nil)
+		req.Header.Set("Authorization", "Bearer "+invalidTokenWithEmptySub)
 
 		// Create a new HTTP response recorder
 		resp := httptest.NewRecorder()

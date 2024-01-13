@@ -6,7 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"inlove-app-server/constants/keys"
 	"inlove-app-server/controllers"
-	posts "inlove-app-server/controllers/posts/dto"
+	"inlove-app-server/controllers/posts/dto"
+
 	prisma "inlove-app-server/prisma/db"
 	"inlove-app-server/types"
 	"net/http"
@@ -37,7 +38,7 @@ type LogInfo struct {
 }
 
 func (pc PostController) Create(c *gin.Context) {
-	var payload posts.CreatePostDto
+	var payload dto.CreatePostDto
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
