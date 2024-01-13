@@ -33,7 +33,19 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set(keys.UserKey, types.User{Id: token.Claims.(jwt.MapClaims)["sub"].(string)})
+		userId := token.Claims.(jwt.MapClaims)["sub"]
+		email := token.Claims.(jwt.MapClaims)["email"]
+		if userId == nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token without valid user id"})
+			return
+		}
+
+		if email == nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token without valid email"})
+			return
+		}
+
+		c.Set(keys.UserKey, types.User{Id: userId.(string), Email: email.(string)})
 		c.Next()
 	}
 }
